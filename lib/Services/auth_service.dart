@@ -34,7 +34,6 @@ class AuthService {
       {String name, String email, String password}) async {
 
     try{
-      //DocumentReference documentReference=_firestore.doc(_auth.currentUser.uid);
       var user=
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
