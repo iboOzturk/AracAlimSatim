@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'carstyle.dart';
-import '../Utils/utils.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +28,7 @@ class _ArabaTipleriState extends State<ArabaTipleri> {
                   children: <Widget>[
                     IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () {
                       Navigator.pushNamed(context, '/home');
+                    //  Navigator.pushNamed(context, '/deneme');
                     }),
                     Text('Araba Tipleri',style: GoogleFonts.josefinSans(fontSize: 30,fontWeight: FontWeight.w800),),
                     Padding(padding: EdgeInsets.only(right: 20))

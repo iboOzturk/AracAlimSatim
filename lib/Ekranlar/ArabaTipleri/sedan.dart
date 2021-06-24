@@ -1,5 +1,3 @@
-import 'package:deneme2/Arabalar/coupecars.dart';
-import 'file:///D:/AppData/uygulamar/deneme2/lib/Ekranlar/ArabaDetay/arabadetay.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

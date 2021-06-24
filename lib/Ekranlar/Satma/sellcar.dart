@@ -1,62 +1,54 @@
+import 'package:deneme2/Utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import '../../Services/auth_service.dart';
+import '../../Services/car_service.dart';
 class SellCar extends StatefulWidget {
   SellCar() : super();
 
   @override
   SellCarState createState() => SellCarState();
 }
-class Car {
-  int id;
-  String name;
 
-  Car(this.id, this.name);
-
-  static List<Car> getCompanies() {
-    return <Car>[
-      Car(1, 'Mercedes SLS 2019'),
-      Car(2, 'BMW M2'),
-      Car(3, 'Audi A6'),
-      Car(4, 'Land Rover Evoque'),
-      Car(5, 'Lamborgohini Gallardo'),
-    ];
-  }
-}
 
 class SellCarState extends State<SellCar> {
+
+  AuthService _authService = AuthService();
+  CarService _service = CarService();
   String ad='';
   String soyad='';
   String tel='';
-  List<Car> _cars = Car.getCompanies();
-  List<DropdownMenuItem<Car>> _dropdownMenuItems;
-  Car _selectedCar;
+
+  final _markalar=["Mercedes","BMW","Audi","Ford","Renault"];
+  String _marka=null;
+
+  TextEditingController markactr=TextEditingController();
+  TextEditingController modelctr=TextEditingController();
+  TextEditingController fiyatctr=TextEditingController();
+  TextEditingController hacmictr=TextEditingController();
+  TextEditingController gucctr=TextEditingController();
+  TextEditingController yakitctr=TextEditingController();
+  TextEditingController tipctr=TextEditingController();
+  TextEditingController adsoyadctr=TextEditingController();
+  void temizle(){
+    adsoyadctr.text='';
+    markactr.text='';
+    modelctr.text='';
+    fiyatctr.text='';
+    hacmictr.text='';
+    gucctr.text='';
+    yakitctr.text='';
+    tipctr.text='';
+  }
+
 
   @override
   void initState() {
-    _dropdownMenuItems = buildDropdownMenuItems(_cars);
-    _selectedCar = _dropdownMenuItems[0].value;
+
     super.initState();
   }
 
-  List<DropdownMenuItem<Car>> buildDropdownMenuItems(List cars) {
-    List<DropdownMenuItem<Car>> items = List();
-    for (Car car in cars) {
-      items.add(
-        DropdownMenuItem(
-          value: car,
-          child: Text(car.name),
-        ),
-      );
-    }
-    return items;
-  }
-  onChangeDropdownItem(Car selectedCar) {
-    setState(() {
-      _selectedCar = selectedCar;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,12 +99,12 @@ class SellCarState extends State<SellCar> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Container(alignment: Alignment.topCenter,height: 365,
+                Container(alignment: Alignment.topCenter,height: MediaQuery.of(context).size.height,
                   decoration: ShapeDecoration(
                       color: Colors.grey[200],
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(bottomLeft:Radius.circular(25) ,
-                              bottomRight:Radius.circular(25)
+                          borderRadius: BorderRadius.only(bottomLeft:Radius.circular(50) ,
+                              bottomRight:Radius.circular(50)
                   ))),
                   child: Column(
                     children: [
@@ -128,54 +120,173 @@ class SellCarState extends State<SellCar> {
                       Container(
                         padding: EdgeInsets.only(left: 60, right: 60),
                         child: TextFormField(
-                          onChanged: (text){_adKaydet(text);},
+                          controller: adsoyadctr,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "İsim ve Soyismi Doldur";
+                            }
+                          },
+                          //onChanged: (text){_adKaydet(text);},
                           decoration: InputDecoration(
                               labelStyle: TextStyle(color: Colors.black),
-                              labelText: 'Adınızı giriniz: '),
+                              labelText: 'Adınızı Soyadınızı giriniz: '),
+                        ),
+                      ),
+                      SizedBox(height: 10,),
+                      Row(mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Marka: ',style: TextStyle(fontSize: 16),),
+                          SizedBox(width: 5,),
+                          Container(
+                            color: Colors.grey[400],
+                            padding: EdgeInsets.only(left: 80, right: 50
+                            ),
+                            child: DropdownButton<String>(
+                              style: TextStyle(fontSize: 18, color: Colors.black),
+                              icon: Icon(Icons.keyboard_arrow_down),
+                              iconSize: 35,
+                              dropdownColor: Colors.orange,
+                              value: _marka,
+                              items: _markalar.map((String value) {
+                                return DropdownMenuItem(
+                                    value: value,
+                                    child: Text(value));
+                              }).toList(),
+                              onChanged: (String value){
+                                updateSelect(value);
+                                _marka=value;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20.0,),
+                    /*  Container(
+                        padding: EdgeInsets.only(left: 60, right: 60),
+                        child: TextFormField(
+                          controller: markactr,
+                          onChanged: (text){_SoyadKaydet(text);},
+                          decoration: InputDecoration(
+                              labelStyle: TextStyle(color: Colors.black),
+                              labelText: 'Marka giriniz: '),
+                        ),
+                      ), */
+                      Container(
+                        padding: EdgeInsets.only(left: 60, right: 60),
+                        child: TextFormField(onChanged: (text){_SoyadKaydet(text);},
+                          controller: modelctr,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Modeli Doldur";
+                            }
+                          },
+                          decoration: InputDecoration(
+                              labelStyle: TextStyle(color: Colors.black),
+                              labelText: 'Model giriniz: '),
                         ),
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 60, right: 60),
                         child: TextFormField(onChanged: (text){_SoyadKaydet(text);},
+                          controller: hacmictr,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Motor Hacmini Doldur";
+                            }
+                          },
                           decoration: InputDecoration(
                               labelStyle: TextStyle(color: Colors.black),
-                              labelText: 'Soyadınızı giriniz: '),
+                              labelText: 'Motor Hacmi giriniz: '),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 60, right: 60),
+                        child: TextFormField(onChanged: (text){_SoyadKaydet(text);},
+                          controller: fiyatctr,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Fiyatı Doldur";
+                            }
+                          },
+                          decoration: InputDecoration(
+                              labelStyle: TextStyle(color: Colors.black),
+                              labelText: 'Fiyat giriniz: '),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 60, right: 60),
+                        child: TextFormField(onChanged: (text){_SoyadKaydet(text);},
+                          controller: gucctr,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Motor gücünü Doldur";
+                            }
+                          },
+                          decoration: InputDecoration(
+                              labelStyle: TextStyle(color: Colors.black),
+                              labelText: 'Motor Gücü giriniz: '),
                         ),
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 60, right: 60),
                         child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                          onChanged: (text){_TelKaydet(text);},
-                          maxLength: 10,
+                          controller: yakitctr,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Yakıt türünü Doldur";
+                            }
+                          },
+                         // keyboardType: TextInputType.number,
+                          //inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        //  onChanged: (text){_TelKaydet(text);},
                           decoration: InputDecoration(
                               labelStyle: TextStyle(color: Colors.black),
-                              labelText: 'Telefonunuzu giriniz: '),
+                              labelText: 'Yakıt türü giriniz: '),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 60, right: 60),
+                        child: TextFormField(//onChanged: (text){_SoyadKaydet(text);},
+                          controller: tipctr,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Arabanın tipini Doldur";
+                            }
+                          },
+                          decoration: InputDecoration(
+                              labelStyle: TextStyle(color: Colors.black),
+                              labelText: 'Tipini giriniz: '),
                         ),
                       ),
                       SizedBox(height: 5,),
-                      Container(
-                        color: Colors.grey[400],
-                        padding: EdgeInsets.only(left: 60, right: 60),
-                        child: DropdownButton(
-                          style: TextStyle(fontSize: 18, color: Colors.black),
-                          icon: Icon(Icons.keyboard_arrow_down),
-                          iconSize: 35,
-                          dropdownColor: Colors.orange,
-                          value: _selectedCar,
-                          items: _dropdownMenuItems,
-                          onChanged: onChangeDropdownItem,
-                        ),
-                      ),
+
                       SizedBox(height: 20.0,),
-                      Text('Selected: ${_selectedCar.name}',
-                        style: TextStyle(color: Colors.black),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25)
+                          ),
+                              primary: Colors.orange,
+                              padding: EdgeInsets.symmetric(vertical: 10,horizontal: 30)
+                          ),
+                          onPressed: () {
+                            if(adsoyadctr.text!=null&&
+                                modelctr.text!=null&&hacmictr.text!=null&&
+                                fiyatctr.text!=null&&gucctr.text!=null&&
+                                yakitctr.text!=null&&tipctr.text!=null)
+                            {
+                              _service.ArabaEkle(adsoyadctr.text,_marka, modelctr.text, fiyatctr.text,hacmictr.text,gucctr.text,yakitctr.text,tipctr.text);
+                              temizle();
+                            }else{
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('alanları doldur')));
+                            }
+
+                            //sat();
+                          },
+                          child: Text('Sat', style: TextStyle(fontSize: 25),)
                       ),
-                      SizedBox(height: 20.0,),
                     ],
                   ),
-                ),
+                ), /*
                 SizedBox(height: 20,),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
@@ -189,12 +300,31 @@ class SellCarState extends State<SellCar> {
                     },
                     child: Text('Sat', style: TextStyle(fontSize: 25),)
                 ),
-                SizedBox(height: 20.0,),
+                SizedBox(height: 20.0,), */
               ],
             ),
           ),
         ),
       ),
     );
+  }
+  void updateSelect(String value) {
+    String marka;
+    switch (value) {
+      case "Mercedes":
+        marka='Mercedes';
+        break;
+      case "BMW":
+        marka='BMW';
+        break;
+      case "Audi":
+        marka='Audi';
+        break;
+      default:
+    }
+    print(marka);
+    setState(() {
+      _marka=marka;
+    });
   }
 }

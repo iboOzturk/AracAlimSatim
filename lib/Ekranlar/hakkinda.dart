@@ -37,7 +37,7 @@ class _HakkindaState extends State<Hakkinda> {
                   ),
                   width: 415,height: 300,alignment: Alignment.center,padding: EdgeInsets.only(left: 10,right: 10),
                   child: Text(
-                    'Bu uygulama Dr. Öğretim Üyesi Ahmet Cevahir ÇINAR tarafından yürütülen 3301456 kodlu MOBİL PROGRAMLAMA dersi kapsamında 193301066 numaralı İbrahim ÖZTÜRK tarafından 30 Nisan 2021 günü yapılmıştır.',
+                    'Bu uygulama Dr. Öğretim Üyesi Ahmet Cevahir ÇINAR tarafından yürütülen 3301456 kodlu MOBİL PROGRAMLAMA dersi kapsamında 193301066 numaralı İbrahim ÖZTÜRK tarafından 25 Haziran 2021 günü yapılmıştır.',
                     style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600,color: Colors.white),
                     textAlign: TextAlign.center,
                   ),

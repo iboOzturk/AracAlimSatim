@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:deneme2/Services/file_utils.dart';
 
 class BuyedPage extends StatefulWidget {
   @override
@@ -7,6 +9,18 @@ class BuyedPage extends StatefulWidget {
 }
 
 class _BuyedPageState extends State<BuyedPage> {
+  String fileContents = 'Veri yok';
+
+  @override
+  void initState() {
+    fileUtils.readFromFile().then((value) {
+      setState(() {
+        fileContents = value;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final TextStyle metinstil=GoogleFonts.mcLaren(fontSize: 35,fontWeight: FontWeight.w500);
@@ -24,9 +38,10 @@ class _BuyedPageState extends State<BuyedPage> {
           child: Column(mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('HAYIRLI OLSUN!',style: metinstil,),
-              Text(data1[0].toString()+' '+data1[1].toString(),textAlign: TextAlign.center,style: metinstil,),
+            Text(fileContents,textAlign: TextAlign.center,style: metinstil,),
+            //  Text(data1[0].toString()+' '+data1[1].toString(),textAlign: TextAlign.center,style: metinstil,),
               Image.asset(data1[3].toString()),
-              Text(data1[2].toString(),textAlign: TextAlign.center,style: metinstil,),
+              //Text(data1[2].toString(),textAlign: TextAlign.center,style: metinstil,),
               Padding(padding: EdgeInsets.only(bottom: 50)),
             ],
           ),

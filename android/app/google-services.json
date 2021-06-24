@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1059375021227",
+    "project_id": "arabaalimsatim-9d678",
+    "storage_bucket": "arabaalimsatim-9d678.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059375021227:android:765a155a8183ae708e8bee",
+        "android_client_info": {
+          "package_name": "com.example.deneme2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1059375021227-02sam3lvfug9ao0tuk45tpj207uq71q7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8WmYz_t4EXcwI6WFzbT-l62STSgia7s8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1059375021227-02sam3lvfug9ao0tuk45tpj207uq71q7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

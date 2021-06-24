@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../Utils/utils.dart';
 class ArabaDetay extends StatefulWidget {
   @override
   _ArabaDetayState createState() => _ArabaDetayState();
@@ -83,6 +82,10 @@ class _ArabaDetayState extends State<ArabaDetay> {
               data.add(model);
               data.add(fiyat);
               data.add(carimage);
+              data.add(yakit);
+              data.add(motorH);
+              data.add(motorG);
+              data.add(arabatip);
               Navigator.pushNamed(context, '/buy',arguments: data);},
                 child: Text('Satın al',style: metinstil,))
           ],
